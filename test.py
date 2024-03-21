@@ -20,8 +20,7 @@ def leggiIstanza(file):
     return n, q, listaStanze, N
 
 
-n, q, listaStanze, N = leggiIstanza(
-    "C:/Users\elisa\OneDrive\Desktop\Prova Finale Stefano\GridGraph\9x9\9x9_1-100_q=2 (1).txt")
+n, q, listaStanze, N = leggiIstanza("istanze/9x9/9x9_1-100_q=2 (1).txt")
 
 m = Model('multiRobot')
 m.max_mip_gap = 0
