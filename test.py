@@ -1,3 +1,5 @@
+from time import *
+
 from mip import *
 
 
@@ -20,7 +22,8 @@ def leggiIstanza(file):
     return n, q, listaStanze, N
 
 
-n, q, listaStanze, N = leggiIstanza("istanze/9x9/9x9_1-100_q=2 (1).txt")
+path = "istanze/9x9/9x9_1-100_q=2 (1).txt"
+n, q, listaStanze, N = leggiIstanza(path)
 
 m = Model('multiRobot')
 m.max_mip_gap = 0
@@ -92,4 +95,23 @@ for i in range(n):
             m += y[i][j][s] >= 0  # (14)
             m += y[i][j][s] >= x[i][s] + x[j][s] - 1  # (15)
 
-m.optimize(max_seconds=60)
+m.store_search_progress_log = True
+status = m.optimize(max_seconds=60)
+dati = m.search_progress_log.log
+nomeIstanza = f'GridGraph_{path.split("/")[2][:-4]}'
+
+print()
+risultato = (f'| Nome Istanza: {nomeIstanza} | Fun. Obiettivo: {m.objective_value} | Time:{dati[-1][0]} | {status} | '
+             f'Best lb: {dati[-1][1][0]} |')
+print(risultato)
+
+istanzeFatte = []
+with open('risultati_test.txt', 'r+', encoding='utf-8') as file:
+    for righe in file:
+        cella = righe.strip().split('|')[1]
+        nome = cella.strip().split(':')[1].lstrip()
+        if nome != nomeIstanza:
+            istanzeFatte.append(nome)
+
+with open('risultati_test.txt', 'w', encoding='utf-8') as file:
+    file.write(risultato)

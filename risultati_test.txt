@@ -1,0 +1,1 @@
+| Nome Istanza: GridGraph_9x9_1-100_q=2 (1) | Fun. Obiettivo: 1940.0 | Time:2.1450002193450928 | OptimizationStatus.OPTIMAL | Best lb: 1940.0 |
