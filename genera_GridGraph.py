@@ -1,9 +1,10 @@
 import networkx as nx
 import random
 
-n = 11               # RICORDA DI CAMBIARAE IL NUMERO DEL FILE NELLE () DEL PATH
-q = 2
-max_peso = 500
+n = 13               # RICORDA DI CAMBIARAE IL NUMERO DEL FILE NELLE () DEL PATH
+q = 5
+max_peso = 100
+numFile = 1
 
 # Creazione del grafo
 G = nx.grid_2d_graph(n, n)
@@ -28,6 +29,6 @@ for node, number in sorted(node_id.items(), key=lambda x: x[1]):
 
 print(risultato)
 
-path = f'istanze/{n}x{n}/{n}x{n}_1-{max_peso}_q={q} (1).txt'
+path = f'istanze/{n}x{n}/{n}x{n}_1-{max_peso}_q={q} ({numFile}).txt'
 with open(path, 'w', encoding='utf-8') as file:
     file.write(risultato)

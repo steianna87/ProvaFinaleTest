@@ -1,7 +1,8 @@
 from mip import *
 
-stanze = [[10, 6],
-          [7, 5]]
+stanze = [[10, 6, 1],
+          [7, 5, 10],
+          [5, 3, 6]]
 
 listaStanze = [j for i in range(len(stanze)) for j in stanze[i]]
 #print(listaStanze)
@@ -10,20 +11,20 @@ n = len(listaStanze)
 # spigoli[i][j] = 1 se esiste lo spigolo tra i e j, 0 altrimenti
 N = [[] for i in range(n)]
 
-'''
-Griglia 3x3
+
+# Griglia 3x3
 
 N[0] = [1, 3]
 N[1] = [0, 2, 4]
 N[2] = [1, 5]
-N[3] = [0, 3, 6]
+N[3] = [0, 4, 6]
 N[4] = [1, 3, 5, 7]
 N[5] = [2, 4, 8]
 N[6] = [3, 7]
 N[7] = [4, 6, 8]
 N[8] = [5, 7]
-
-Griglia 2x3
+'''
+# Griglia 2x3
 
 N[0] = [1, 3]
 N[1] = [0, 2, 4]
@@ -34,13 +35,13 @@ N[5] = [2, 4]
 '''
 
 '''
-Griglia 2x2
-'''
+# Griglia 2x2
+
 N[0] = [1, 2]
 N[1] = [0, 3]
 N[2] = [0, 3]
 N[3] = [1, 2]
-
+'''
 
 
 for riga, listaRiga in enumerate(N):
@@ -56,7 +57,7 @@ m = Model('multiRobot')
 # numero stanze  n = len(listaStanze)
 n = len(listaStanze)
 # numero robot
-q = 2
+q = 3
 # variabili per etichettare (label) un nodo i al robot s
 x = [[m.add_var('x({})({})'.format(i+1, s+1), var_type=BINARY) for s in range(q)] for i in range(n)]
 
@@ -89,7 +90,7 @@ for i in range(n):
         m += n * r[i][s] <= (n + 1 - xsum(x[j][s] for j in range(i+1)))     # (7)
 
 # F flow trasportato dal nodo i al nodo j
-F = [[m.add_var('F({})({})'.format(i+1, j+1), var_type=INTEGER) for j in range(n)] for i in range(n+1)]
+F = [[m.add_var('F({})({})'.format(i+1, j+1), var_type=INTEGER) if i != j else None for j in range(n)] for i in range(n+1)]
 # carica delle reception: nodo sorgente 0 fittizio (dummy) da cui parte il flow
 for i in range(n):
     m += F[n][i] <= n * xsum(r[i][s] for s in range(q))                     # (8) la sommatoria è 1 se il nodo i è reception, 0 altrimenti
@@ -117,16 +118,20 @@ for i in range(n):
 
 # Flow transportation
 # variabilie y(i)(j)(s) = 1 se il nodo i e j sono entrambi etichettati (labeled) al set s
-y = [[[m.add_var('y({})({})({})'.format(i+1, j+1, s+1), var_type=BINARY) for s in range(q)] for j in range(n)] for i in range(n)]
+y = [[[m.add_var('y({})({})({})'.format(i+1, j+1, s+1), var_type=BINARY) if i != j else None for s in range(q)] for j in range(n)] for i in range(n)]
+nodiAccoppiati = []
 for i in range(n):
     for j in N[i]:
-        m += F[i][j] <= n * xsum(y[i][j][s] for s in range(q))            # (11)
-        # vincoli per linearizzare y(i)(j)(s) = x(i)(s) * x(j)(s)
-        for s in range(q):
-            m += y[i][j][s] <= x[i][s]                                      # (12)
-            m += y[i][j][s] <= x[j][s]                                      # (13)
-            m += y[i][j][s] >= 0                                            # (14)
-            m += y[i][j][s] >= x[i][s] + x[j][s] - 1                        # (15)
+        m += F[i][j] <= n * xsum(y[i][j][s] for s in range(q))              # (11)
+        if not nodiAccoppiati.__contains__({i, j}):
+            nodiAccoppiati.append({i, j})
+            # vincoli per linearizzare y(i)(j)(s) = x(i)(s) * x(j)(s)
+            for s in range(q):
+                m += y[i][j][s] <= x[i][s]                                      # (12)
+                m += y[i][j][s] <= x[j][s]                                      # (13)
+                m += y[i][j][s] >= 0                                            # (14)
+                m += y[i][j][s] >= x[i][s] + x[j][s] - 1                        # (15)
+                m += y[i][j][s] == y[j][i][s]
 
 def stampaSoluzione():
     soluzione = []

@@ -2,6 +2,13 @@ from time import *
 
 from mip import *
 
+def contaSPigoli(N):
+    num = 0
+    for nodo in N:
+        for vicini in nodo:
+            num += 1
+    return num//2
+
 
 def leggiIstanza(file):
     with open(file, 'r', encoding='utf-8') as istanza:
@@ -18,11 +25,13 @@ def leggiIstanza(file):
             riga = righe.strip().split(':')
             N[int(riga[0])] = [int(i) for i in riga[1].strip().split(' ')]
 
-    print(f'{n} stanze, {len(listaStanze)} pesi')
+    print(f'{n} stanze, {len(listaStanze)} pesi\n'
+          f'{q} robot\n'
+          f'{contaSPigoli(N)} spigoli\n')
     return n, q, listaStanze, N
 
 
-path = "istanze/9x9/9x9_1-100_q=2 (1).txt"
+path = "istanze/Ventresca/WattsStrogatz_n250_1-500_q=6.txt"
 n, q, listaStanze, N = leggiIstanza(path)
 
 m = Model('multiRobot')
@@ -65,7 +74,7 @@ for i in range(n):
         m += n * r[i][s] <= (n + 1 - xsum(x[j][s] for j in range(i + 1)))  # (7)
 
 # F flow trasportato dal nodo i al nodo j
-F = [[m.add_var('F({})({})'.format(i + 1, j + 1), var_type=INTEGER) for j in range(n)] for i in range(n + 1)]
+F = [[m.add_var('F({})({})'.format(i + 1, j + 1), var_type=INTEGER) if i != j else None for j in range(n)] for i in range(n + 1)]
 # carica delle reception: nodo sorgente 0 fittizio (dummy) da cui parte il flow
 for i in range(n):
     m += F[n][i] <= n * xsum(r[i][s] for s in range(q))  # (8) la sommatoria è 1 se il nodo i è reception, 0 altrimenti
@@ -83,35 +92,42 @@ for i in range(n):
 
 # Flow transportation
 # variabilie y(i)(j)(s) = 1 se il nodo i e j sono entrambi etichettati (labeled) al set s
-y = [[[m.add_var('y({})({})({})'.format(i + 1, j + 1, s + 1), var_type=BINARY) for s in range(q)] for j in range(n)] for
-     i in range(n)]
+y = [[[m.add_var('y({})({})({})'.format(i + 1, j + 1, s + 1), var_type=BINARY) if i != j else None for s in range(q)]
+      for j in range(n)] for i in range(n)]
+#nodiAccoppiati = []
 for i in range(n):
     for j in N[i]:
         m += F[i][j] <= n * xsum(y[i][j][s] for s in range(q))  # (11)
-        # vincoli per linearizzare y(i)(j)(s) = x(i)(s) * x(j)(s)
+        #if not nodiAccoppiati.__contains__({i, j}):
+            #nodiAccoppiati.append({i, j})
+            # vincoli per linearizzare y(i)(j)(s) = x(i)(s) * x(j)(s)
         for s in range(q):
             m += y[i][j][s] <= x[i][s]  # (12)
             m += y[i][j][s] <= x[j][s]  # (13)
             m += y[i][j][s] >= 0  # (14)
             m += y[i][j][s] >= x[i][s] + x[j][s] - 1  # (15)
+                #m += y[i][j][s] == y[j][i][s]
 
 m.store_search_progress_log = True
-status = m.optimize(max_seconds=60)
+status = m.optimize(max_seconds=200)
 dati = m.search_progress_log.log
-nomeIstanza = f'GridGraph_{path.split("/")[2][:-4]}'
+nomeIstanza = f'{path.split("/")[2][:-4]}'          # GridGraph_
 
 print()
-risultato = (f'| Nome Istanza: {nomeIstanza} | Fun. Obiettivo: {m.objective_value} | Time:{dati[-1][0]} | {status} | '
-             f'Best lb: {dati[-1][1][0]} |')
+risultato = (f'| Nome Istanza: {nomeIstanza} | Fun. Obiettivo: {m.objective_value} | Time: {dati[-1][0]} | Stato '
+             f'soluzione: {status.__str__().split(".")[1]} | Best lb: {dati[-1][1][0]} |')
 print(risultato)
 
-istanzeFatte = []
-with open('risultati_test.txt', 'r+', encoding='utf-8') as file:
-    for righe in file:
-        cella = righe.strip().split('|')[1]
-        nome = cella.strip().split(':')[1].lstrip()
-        if nome != nomeIstanza:
-            istanzeFatte.append(nome)
 
-with open('risultati_test.txt', 'w', encoding='utf-8') as file:
-    file.write(risultato)
+with open('risultati_test.txt', 'r+', encoding='utf-8') as file:
+    numRighe = len(file.readlines())
+    file.seek(0)
+    for i in range(numRighe-1):
+        file.readline()
+    ultimaRiga = file.readline()
+    cella = ultimaRiga.strip().split('|')[1]
+    nome = cella.strip().split(':')[1].lstrip()
+    if nome != nomeIstanza or numRighe == 0:
+        file.write(risultato+'\n')
+
+
