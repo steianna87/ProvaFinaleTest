@@ -31,7 +31,7 @@ def leggiIstanza(file):
     return n, q, listaStanze, N
 
 
-path = "istanze/Ventresca/WattsStrogatz_n250_1-500_q=6.txt"
+path = "istanze/Ventresca/WattsStrogatz_n1500_1-100_q=5.txt"
 n, q, listaStanze, N = leggiIstanza(path)
 
 m = Model('multiRobot')
@@ -100,7 +100,7 @@ for i in range(n):
         m += F[i][j] <= n * xsum(y[i][j][s] for s in range(q))  # (11)
         #if not nodiAccoppiati.__contains__({i, j}):
             #nodiAccoppiati.append({i, j})
-            # vincoli per linearizzare y(i)(j)(s) = x(i)(s) * x(j)(s)
+        # vincoli per linearizzare y(i)(j)(s) = x(i)(s) * x(j)(s)
         for s in range(q):
             m += y[i][j][s] <= x[i][s]  # (12)
             m += y[i][j][s] <= x[j][s]  # (13)

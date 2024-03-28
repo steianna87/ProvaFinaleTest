@@ -1,7 +1,7 @@
 import random
 from mip import *
 
-pesi = [random.randint(1, 500) for i in range(250)]
+pesi = [random.randint(1, 100) for i in range(1500)]
 
 risultato = ''
 for i in pesi:
