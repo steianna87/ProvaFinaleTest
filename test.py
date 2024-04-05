@@ -31,7 +31,7 @@ def leggiIstanza(file):
     return n, q, listaStanze, N
 
 
-path = "istanze/Ventresca/WattsStrogatz_n1500_1-100_q=5.txt"
+path = "istanze/Ventresca/ErdosRenyi_n466_1-100_q=2.txt"
 n, q, listaStanze, N = leggiIstanza(path)
 
 m = Model('multiRobot')
