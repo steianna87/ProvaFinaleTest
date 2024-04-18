@@ -1,3 +1,26 @@
 | Nome Istanza: 9x9_1-100_q=2 (1) | Fun. Obiettivo: 1955.0 | Time: 0.023000001907348633 | Stato soluzione: OPTIMAL | Best lb: 1955.0 |
 | Nome Istanza: WattsStrogatz_n1500_1-100_q=5 | Fun. Obiettivo: 15768.0 | Time: 8.687999963760376 | Stato soluzione: OPTIMAL | Best lb: 15768.0 |
 | Nome Istanza: WattsStrogatz_n1500_1-100_q=4 | Fun. Obiettivo: 19118.0 | Time: 6.442999839782715 | Stato soluzione: OPTIMAL | Best lb: 19118.0 |
+
+# Ponendo le variabili tutte a 1 nei sottoinsiemi
+| Nome Istanza: 9x9_1-100_q=2 (1) | Fun. Obiettivo: 1955.0 | Time: 0.05499982833862305 | Stato soluzione: OPTIMAL | Best lb: 1955.0 |
+| Nome Istanza: 9x9_1-100_q=2 (2) | Fun. Obiettivo: 1890.0 | Time: 0.03400015830993652 | Stato soluzione: OPTIMAL | Best lb: 1890.0 |
+| Nome Istanza: 9x9_1-100_q=2 (3) | Fun. Obiettivo: 1938.0 | Time: 0.04399991035461426 | Stato soluzione: OPTIMAL | Best lb: 1938.0 |
+| Nome Istanza: 9x9_1-500_q=2 (1) | Fun. Obiettivo: 10597.0 | Time: 0.07299995422363281 | Stato soluzione: OPTIMAL | Best lb: 10597.0 |
+| Nome Istanza: 9x9_1-500_q=2 (2) | Fun. Obiettivo: 9854.0 | Time: 0.03299999237060547 | Stato soluzione: OPTIMAL | Best lb: 9854.0 |
+| Nome Istanza: 9x9_1-500_q=2 (3) | Fun. Obiettivo: 9963.0 | Time: 0.039999961853027344 | Stato soluzione: OPTIMAL | Best lb: 9963.0 |
+
+# Ponendo 10 variabili casuali a 1 nei sottoinsiemi
+| Nome Istanza: 9x9_1-100_q=2 (1) | Fun. Obiettivo: 1940.0 | Time: 0.19300007820129395 | Stato soluzione: OPTIMAL | Best lb: 1940.0 |
+| Nome Istanza: 9x9_1-100_q=2 (2) | Fun. Obiettivo: 1797.0 | Time: 0.8489999771118164 | Stato soluzione: OPTIMAL | Best lb: 1797.0000000000007 |
+| Nome Istanza: 9x9_1-100_q=2 (3) | Fun. Obiettivo: 1933.0 | Time: 1.4839999675750732 | Stato soluzione: OPTIMAL | Best lb: 1933.0 |
+| Nome Istanza: 9x9_1-500_q=2 (1) | Fun. Obiettivo: 10452.0 | Time: 6.495000123977661 | Stato soluzione: OPTIMAL | Best lb: 10452.0 |
+| Nome Istanza: 9x9_1-500_q=2 (2) | Fun. Obiettivo: 8518.0 | Time: 2.374000072479248 | Stato soluzione: OPTIMAL | Best lb: 8518.0 |
+| Nome Istanza: 9x9_1-500_q=2 (3) | Fun. Obiettivo: 9842.0 | Time: 4.552000045776367 | Stato soluzione: OPTIMAL | Best lb: 9842.0 |
+
+| Nome Istanza: GridGraph_9x9_1-100_q=2 (1) | Fun. Obiettivo: 1940.0 | Time: 1.997999906539917 | Stato soluzione: OPTIMAL | Best lb: 1940.0 |
+| Nome Istanza: GridGraph_9x9_1-100_q=2 (2) | Fun. Obiettivo: 1797.0 | Time: 6.644000053405762 | Stato soluzione: OPTIMAL | Best lb: 1797.0 |
+| Nome Istanza: GridGraph_9x9_1-100_q=2 (3) | Fun. Obiettivo: 1933.0 | Time: 4.93500018119812 | Stato soluzione: OPTIMAL | Best lb: 1933.0 |
+| Nome Istanza: GridGraph_9x9_1-500_q=2 (1) | Fun. Obiettivo: 10452.0 | Time: 4.080000162124634 | Stato soluzione: OPTIMAL | Best lb: 10452.0 |
+| Nome Istanza: GridGraph_9x9_1-500_q=2 (2) | Fun. Obiettivo: 8518.0 | Time: 8.933000087738037 | Stato soluzione: OPTIMAL | Best lb: 8518.0 |
+| Nome Istanza: GridGraph_9x9_1-500_q=2 (3) | Fun. Obiettivo: 9842.0 | Time: 5.67300009727478 | Stato soluzione: OPTIMAL | Best lb: 9842.0 |

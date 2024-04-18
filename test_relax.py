@@ -1,4 +1,3 @@
-from random import randint
 from time import *
 
 from mip import *
@@ -32,7 +31,7 @@ def leggiIstanza(file):
     return n, q, listaStanze, N
 
 
-path = "istanze/9x9/9x9_1-500_q=2 (3).txt"
+path = "istanze/13x13/13x13_1-100_q=5 (1).txt"
 n, q, listaStanze, N = leggiIstanza(path)
 
 m = Model('multiRobot')
@@ -45,7 +44,7 @@ m.max_mip_gap = 0
 # numero robot
 # q = 2
 # variabili per etichettare (label) un nodo i al robot s
-x = [[m.add_var('x({})({})'.format(i + 1, s + 1), var_type=BINARY) for s in range(q)] for i in range(n)]
+x = [[m.add_var('x({})({})'.format(i + 1, s + 1), var_type=CONTINUOUS, lb=0, ub=1) for s in range(q)] for i in range(n)]
 
 # funzione obiettivo
 t = m.add_var(name='setSlower')
@@ -62,7 +61,7 @@ for i in range(n):
 
 # Flow reception
 # variabile per etichettatre (label) il nodo reception
-r = [[m.add_var('r({})({})'.format(i + 1, s + 1), var_type=BINARY) for s in range(q)] for i in range(n)]
+r = [[m.add_var('r({})({})'.format(i + 1, s + 1), var_type=CONTINUOUS, lb=0, ub=1) for s in range(q)] for i in range(n)]
 for i in range(n):
     for s in range(q):
         m += r[i][s] <= x[i][s]  # (5)
@@ -93,7 +92,7 @@ for i in range(n):
 
 # Flow transportation
 # variabilie y(i)(j)(s) = 1 se il nodo i e j sono entrambi etichettati (labeled) al set s
-y = [[[m.add_var('y({})({})({})'.format(i + 1, j + 1, s + 1), var_type=BINARY) if i != j else None for s in range(q)]
+y = [[[m.add_var('y({})({})({})'.format(i + 1, j + 1, s + 1), var_type=CONTINUOUS, lb=0, ub=1) if i != j else None for s in range(q)]
       for j in range(n)] for i in range(n)]
 #nodiAccoppiati = []
 for i in range(n):
@@ -109,79 +108,33 @@ for i in range(n):
             m += y[i][j][s] >= x[i][s] + x[j][s] - 1  # (15)
                 #m += y[i][j][s] == y[j][i][s]
 
-# Dividere in q sottoinsiemi uguali partendo da 1 fino a n (es: se q = 2 -----> Q1 = {1,...,n/2} e Q2 = {(n/2+1),...,n})
-num_insiemi = q
-dim_insiemi = int(n / q)
-Q = []
-Q_set = []
-
-for s in range(num_insiemi):
-    sottoinsieme = []
-    sottoinsieme_set = set()
-    if s != num_insiemi-1:
-        for i in range(dim_insiemi * s, dim_insiemi + dim_insiemi * s):
-            sottoinsieme.append(x[i][s])
-            sottoinsieme_set.add(x[i][s])
-    else:
-        for i in range(dim_insiemi * s, n):
-            sottoinsieme.append(x[i][s])
-            sottoinsieme_set.add(x[i][s])
-    Q.append(sottoinsieme)
-    Q_set.append(sottoinsieme_set)
-
-
-# Estraggo n_da_estrarre variabili random dai sottoinsiemi che verranno poi poste a 1
-def random_generator(n, n_da_estrarre):
-    num = [randint(0, n-1) for i in range(n_da_estrarre)]
-    for i in num:
-        yield i
-
-CONSTR = []
-for s in range(num_insiemi):
-    c = []
-    num_var = len(Q[s])
-    for i in random_generator(num_var, 10):
-        m += Q[s][i] == 1
-        c.append(Q[s][i])
-    CONSTR.append(c)
-
-
-'''
-CONSTR = []
-for s in range(num_insiemi):
-    n_da_estrarre = randint(1, len(Q_set[s]))
-    c = []
-    for var in Q_set[s]:
-        if n != 0:
-            m += var == 1
-            n -= 1
-            c.append(var)
-    CONSTR.append(c)
-'''
-
-
 m.store_search_progress_log = True
 status = m.optimize(max_seconds=200)
 dati = m.search_progress_log.log
 nomeIstanza = f'{path.split("/")[2][:-4]}'          # GridGraph_
 
-print()
+'''print()
 risultato = (f'| Nome Istanza: {nomeIstanza} | Fun. Obiettivo: {m.objective_value} | Time: {dati[-1][0]} | Stato '
              f'soluzione: {status.__str__().split(".")[1]} | Best lb: {dati[-1][1][0]} |')
-print(risultato)
+print(risultato)'''
 
 
-with open('risultati_test_algoritmo.txt', 'r+', encoding='utf-8') as file:
-    numRighe = len(file.readlines())
-    if numRighe == 0:
-        file.write(risultato+'\n')
+with open('risultati_test_relax.txt', 'w', encoding='utf-8') as file:
+    '''numRighe = len(file.readlines())
     file.seek(0)
     for i in range(numRighe-1):
         file.readline()
     ultimaRiga = file.readline()
     cella = ultimaRiga.strip().split('|')[1]
-    nome = cella.strip().split(':')[1].lstrip()
-    if nome != nomeIstanza:
-        file.write(risultato+'\n')
+    nome = cella.strip().split(':')[1].lstrip()'''
+    #if nome != nomeIstanza or numRighe == 0:
+    #file.write(risultato+'\n')
+    pass
 
+num = 0
+for i in range(n):
+    for j in range(q):
+        if float(x[i][j].x) != 0.0:
+            num += 1
+            print(x[i][j], x[i][j].x, num)
 

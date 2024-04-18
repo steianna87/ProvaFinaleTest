@@ -30,5 +30,5 @@ for node, number in sorted(node_id.items(), key=lambda x: x[1]):
 print(risultato)
 
 path = f'istanze/{n}x{n}/{n}x{n}_1-{max_peso}_q={q} ({numFile}).txt'
-with open(path, 'w', encoding='utf-8') as file:
-    file.write(risultato)
+'''with open(path, 'w', encoding='utf-8') as file:
+    file.write(risultato)'''
