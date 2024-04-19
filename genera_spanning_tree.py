@@ -17,8 +17,9 @@ def replace_chars(stringa: str):
 
 
 class Istanza:
-    def __init__(self, path_grafo):
+    def __init__(self, path_grafo, grid_graph: bool = False):
         self.__path_grafo = path_grafo
+        self.__grid_graph = grid_graph
         self.__n = self.leggiIstanza(path_grafo)[0]
         self.__q = self.leggiIstanza(path_grafo)[1]
         self.listaPesi = self.leggiIstanza(path_grafo)[2]
@@ -67,7 +68,7 @@ class Istanza:
             risultato += '\n'
             risultato += f"{number}: {[node_id[n] for n in neighbors]}"
 
-        #print(risultato)
+        # print(risultato)
         risultato = replace_chars(risultato)
 
         if grid_graph:
@@ -77,7 +78,7 @@ class Istanza:
             path = f'istanze_algoritmi/{tipo_algoritmo}/Ventresca/n{self.__n}_1-{max_peso}_q={self.__q} ({numFile}).txt'
         with open(path, 'w', encoding='utf-8') as file:
             file.write(risultato)
-        pass
+        return path
 
     def inizializza_Grafo(self):
         grafo = nx.Graph()
@@ -85,49 +86,54 @@ class Istanza:
             grafo.add_node(nodo, weight=peso)
         for nodo in range(len(self.N)):
             for vicino in self.N[nodo]:
-                grafo.add_edge(nodo, vicino, weight=1)
+                grafo.add_edge(nodo, vicino)
         print(grafo)
         return grafo
 
-    def genera_RandomST(self, grid_graph: bool = False):
+    def genera_RandomST(self):
         ST = nx.random_spanning_tree(self.grafo)
-        self.scriviIstanza(ST, 'random', grid_graph=grid_graph)
-        return ST
+        path = self.scriviIstanza(ST, 'random', grid_graph=self.__grid_graph)
+        return ST, path
 
-    def genera_AdditiveST(self, grid_graph: bool = False):
+    def genera_AdditiveST(self):
         self.grafo.clear_edges()
 
         for nodo in range(len(self.N)):
+            peso_nodo = self.listaPesi[nodo]
             for vicino in self.N[nodo]:
-                self.grafo.add_edge(nodo, vicino, weight=nodo+vicino)
+                peso_vicino = self.listaPesi[vicino]
+                self.grafo.add_weighted_edges_from([(nodo, vicino, peso_nodo+peso_vicino)], weight='weight')
 
-        ST = nx.minimum_spanning_tree(self.grafo, algorithm='kruskal')
-        self.scriviIstanza(ST, 'additive', grid_graph=grid_graph)
-        return ST
+        ST = nx.minimum_spanning_tree(self.grafo, algorithm='kruskal', weight='weight')
+        path = self.scriviIstanza(ST, 'additive', grid_graph=self.__grid_graph)
+        return ST, path
 
-
-    def genera_MinimumST(self, grid_graph: bool = False):
+    def genera_MinimumST(self):
         self.grafo.clear_edges()
 
         for nodo in range(len(self.N)):
+            peso_nodo = self.listaPesi[nodo]
             for vicino in self.N[nodo]:
-                self.grafo.add_edge(nodo, vicino, weight=min(nodo, vicino))
+                peso_vicino = self.listaPesi[vicino]
+                self.grafo.add_weighted_edges_from([(nodo, vicino, min(peso_nodo, peso_vicino))], weight='weight')
 
-        ST = nx.minimum_spanning_tree(self.grafo, algorithm='kruskal')
-        self.scriviIstanza(ST, 'minimum', grid_graph=grid_graph)
-        return ST
+        ST = nx.minimum_spanning_tree(self.grafo, algorithm='kruskal', weight='weight')
+        path = self.scriviIstanza(ST, 'minimum', grid_graph=self.__grid_graph)
+        return ST, path
 
     def __str__(self):
-        return (f'nodi: {self.grafo.nodes}\n'
+        return (f'path: {self.__path_grafo}\n'
+                f'nodi: {self.grafo.nodes}\n'
                 f'spigoli: {self.grafo.edges}\n'
-                f'spanning tree: {self.genera_RandomST()}')
+                f'path ST: {self.genera_RandomST()[1]}\n'
+                f'spanning tree: {self.genera_MinimumST()[0].edges.data()}')
 
 
 if __name__ == '__main__':
-    g = Istanza('istanze/9x9/9x9_1-100_q=2 (1).txt')
-    rST = g.genera_RandomST(grid_graph=True)
-    aST = g.genera_AdditiveST(grid_graph=True)
-    mST = g.genera_MinimumST(grid_graph=True)
+    g = Istanza('istanze/9x9/9x9_1-100_q=2 (1).txt', grid_graph=True)
+    rST = g.genera_RandomST()[0]
+    aST = g.genera_AdditiveST()[0]
+    mST = g.genera_MinimumST()[0]
 
     num_nodes = len(g.grafo.nodes)
     num_cols = int(num_nodes ** 0.5)
@@ -146,17 +152,17 @@ if __name__ == '__main__':
     for i, node in enumerate(g.grafo.nodes):
         row = i // num_cols + 10
         col = i % num_cols
-        pos[node] = (col, -row)
+        pos3[node] = (col, -row)
     pos4 = {}
     for i, node in enumerate(g.grafo.nodes):
         row = i // num_cols + 10
         col = i % num_cols + 10
-        pos2[node] = (col, -row)
+        pos4[node] = (col, -row)
 
     nx.draw(g.grafo, with_labels=True, pos=pos)
     nx.draw(rST, with_labels=True, pos=pos2, edge_color='red')
     nx.draw(aST, with_labels=True, pos=pos3, edge_color='green')
-    nx.draw(mST, with_labels=True, pos=pos4, edge_color='black')
+    nx.draw(mST, with_labels=True, pos=pos4, edge_color='blue')
 
     plt.show()
     print()
