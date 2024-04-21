@@ -76,6 +76,7 @@ class Istanza:
             path = f'istanze_algoritmi/{tipo_algoritmo}/{n}x{n}/{n}x{n}_1-{max_peso}_q={self.__q} ({numFile}).txt'
         else:
             path = f'istanze_algoritmi/{tipo_algoritmo}/Ventresca/n{self.__n}_1-{max_peso}_q={self.__q} ({numFile}).txt'
+
         with open(path, 'w', encoding='utf-8') as file:
             file.write(risultato)
         return path
@@ -131,7 +132,7 @@ class Istanza:
 
 if __name__ == '__main__':
     g = Istanza('istanze/9x9/9x9_1-100_q=2 (1).txt', grid_graph=True)
-    rST = g.genera_RandomST()[0]
+    rST, pathR = g.genera_RandomST()
     aST = g.genera_AdditiveST()[0]
     mST = g.genera_MinimumST()[0]
 
@@ -167,3 +168,4 @@ if __name__ == '__main__':
     plt.show()
     print()
     print(g)
+    print(pathR)

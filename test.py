@@ -1,8 +1,27 @@
+from dataclasses import dataclass
 from time import *
 
 from mip import *
+from networkx import Graph
 
-def multi_robot_model(path):
+from genera_spanning_tree import Istanza
+
+
+@dataclass
+class Risultato:
+    grafo: Graph
+    nome_istanza: str
+    fun_obiettivo: float
+    time: float
+    stato_soluzione: str
+    best_lb: float
+
+    def __str__(self):
+        return (f'| Nome Istanza: {self.nome_istanza} | Fun. Obiettivo: {self.fun_obiettivo} | Time: {self.time} | '
+                f'Stato soluzione: {self.stato_soluzione} | Best lb: {self.best_lb} |')
+
+
+def multi_robot_model(path: str, verbose: int):
     def contaSPigoli(N):
         num = 0
         for nodo in N:
@@ -110,20 +129,31 @@ def multi_robot_model(path):
                     #m += y[i][j][s] == y[j][i][s]
 
     m.store_search_progress_log = True
+    m.verbose = verbose
     status = m.optimize(max_seconds=200)
     dati = m.search_progress_log.log
-    nomeIstanza = f'{path.split("/")[2][:-4]}'          # GridGraph_
+    nomeIstanza = f'{path.split("/")[-1][:-4]}'          # GridGraph_
+
+    lb = dati[-1][1][0]
+    print(lb)
+    print(dati[-1])
+    for dato in dati:
+        if dato[1][0] < lb and dato[1][0] != 100:
+            lb = dato[1][0]
+    print(lb)
 
     print()
-    risultato = (f'| Nome Istanza: {nomeIstanza} | Fun. Obiettivo: {m.objective_value} | Time: {dati[-1][0]} | Stato '
-                 f'soluzione: {status.__str__().split(".")[1]} | Best lb: {dati[-1][1][0]} |')
-    print(risultato)
-    return nomeIstanza, risultato
+    #risultato = (f'| Nome Istanza: {nomeIstanza} | Fun. Obiettivo: {m.objective_value} | Time: {dati[-1][0]} | Stato '
+    #             f'soluzione: {status.__str__().split(".")[1]} | Best lb: {lb} |')
+    risultato = Risultato(Graph(), nomeIstanza, float(m.objective), dati[-1][0], status.__str__().split(".")[1], lb)
+    #print(risultato)
+    return risultato
 
 if __name__ == '__main__':
-    nomeIstanza, risultato = multi_robot_model(path="istanze/Ventresca/ErdosRenyi_n466_1-100_q=2.txt")
+    risultato = multi_robot_model(path="istanze_algoritmi/random/9x9/9x9_1-100_q=2 (1).txt", verbose=0)
+    print(risultato)
 
-    with open('risultati_test.txt', 'r+', encoding='utf-8') as file:
+    '''with open('risultati_test.txt', 'r+', encoding='utf-8') as file:
         numRighe = len(file.readlines())
         file.seek(0)
         for i in range(numRighe-1):
@@ -132,6 +162,6 @@ if __name__ == '__main__':
         cella = ultimaRiga.strip().split('|')[1]
         nome = cella.strip().split(':')[1].lstrip()
         if nome != nomeIstanza or numRighe == 0:
-            file.write(risultato+'\n')
+            file.write(risultato+'\n')'''
 
 
