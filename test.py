@@ -1,6 +1,8 @@
 from dataclasses import dataclass
 from time import *
 
+import matplotlib.pyplot as plt
+import networkx as nx
 from mip import *
 from networkx import Graph
 
@@ -138,20 +140,54 @@ def multi_robot_model(path: str, verbose: int):
     print(lb)
     print(dati[-1])
     for dato in dati:
-        if dato[1][0] < lb and dato[1][0] != 100:
+        if dato[1][0] < lb and dati.index(dato) > 10:
             lb = dato[1][0]
     print(lb)
+
+
+    # Grafo della soluzione
+    soluzione = nx.Graph()
+
+    colore_set = {0: 'red', 1: 'blue', 2: 'black', 3: 'green', 4: 'purple', 5: 'pink', 6: 'yellow'}
+
+    for i in range(n):
+        for s in range(q):
+            if float(x[i][s].x) > 0.99:
+                soluzione.add_node(i, set=s, color=colore_set[s])
+
+    for s in range(q):
+        for i in range(n):
+            for j in range(n):
+                if F[i][j] is not None and int(F[i][j].x) > 0 and y[i][j][s] is not None and float(y[i][j][s].x) > 0.99:
+                    soluzione.add_edge(i, j, color=colore_set[s])
 
     print()
     #risultato = (f'| Nome Istanza: {nomeIstanza} | Fun. Obiettivo: {m.objective_value} | Time: {dati[-1][0]} | Stato '
     #             f'soluzione: {status.__str__().split(".")[1]} | Best lb: {lb} |')
-    risultato = Risultato(Graph(), nomeIstanza, float(m.objective), dati[-1][0], status.__str__().split(".")[1], lb)
+    risultato = Risultato(soluzione, nomeIstanza, float(m.objective), dati[-1][0], status.__str__().split(".")[1], lb)
     #print(risultato)
     return risultato
 
 if __name__ == '__main__':
-    risultato = multi_robot_model(path="istanze_algoritmi/random/9x9/9x9_1-100_q=2 (1).txt", verbose=0)
+    risultato = multi_robot_model(path="istanze/Ventresca/ForestFire_n250_1-100_q=3.txt", verbose=1)
     print(risultato)
+
+    num_nodes = len(risultato.grafo.nodes)
+    num_cols = int(num_nodes ** 0.5)
+    num_rows = (num_nodes + num_cols - 1) // num_cols
+    pos = {}
+    for i, node in enumerate(risultato.grafo.nodes):
+        row = i // num_cols
+        col = i % num_cols
+        pos[node] = (col, -row)
+
+    colore_set = {0: 'red', 1: 'blue', 2: 'black', 3: 'green', 4: 'purple', 5: 'pink', 6: 'yellow'}
+    colori_edge = [edge[2]['color'] for edge in risultato.grafo.edges.data()]
+    colori_node = [node[1]['color'] for node in risultato.grafo.nodes.data()]
+
+    nx.draw(risultato.grafo, with_labels=True, pos=pos, edge_color=colori_edge, node_color=colori_node)
+
+    plt.show()
 
     '''with open('risultati_test.txt', 'r+', encoding='utf-8') as file:
         numRighe = len(file.readlines())

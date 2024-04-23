@@ -4,6 +4,7 @@ from networkx import Graph
 
 from test import multi_robot_model, Risultato
 from genera_spanning_tree import Istanza
+from disegna_grafi import disegna
 
 # Approccio con formazione di spanning tree grazie all'algoritmo di Kruskal e Random
 path = "istanze/9x9/9x9_1-100_q=2 (1).txt"
@@ -38,6 +39,8 @@ risultato_aST = multi_robot_model(path_additive, 1)
 # Algoritmo Minimum
 mST, path_minimum = istanza.genera_MinimumST()
 risultato_mST = multi_robot_model(path_minimum, 1)
+
+disegna([best_risultato, risultato_aST, risultato_mST])
 
 print()
 print(f'************* RISULTATI *************\n'
