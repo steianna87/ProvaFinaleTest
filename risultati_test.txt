@@ -76,8 +76,8 @@
 | Nome Istanza: ForestFire_n250_1-500_q=3 | Fun. Obiettivo: 21319.0 | Time: 152.99899983406067 | Stato soluzione: OPTIMAL | Best lb: 21319.0 |
 | Nome Istanza: ForestFire_n250_1-100_q=4 | Fun. Obiettivo: 3053.0 | Time: 200.0039999485016 | Stato soluzione: FEASIBLE | Best lb: 3050.000000000024 |
 | Nome Istanza: ForestFire_n250_1-500_q=4 | Fun. Obiettivo: 15098.0 | Time: 200.0199999809265 | Stato soluzione: FEASIBLE | Best lb: 15096.000000000004 |
-| Nome Istanza: ForestFire_n250_1-100_q=5 | Fun. Obiettivo: 3066.0 | Time: 200.01599979400635 | Stato soluzione: FEASIBLE | Best lb: 3058.000000000002 |
-| Nome Istanza: ForestFire_n250_1-500_q=5 | Fun. Obiettivo: 15787.0 | Time: 200.0349998474121 | Stato soluzione: FEASIBLE | Best lb: 15715.0 |
+| Nome Istanza: ForestFire_n250_1-100_q=5 | Fun. Obiettivo: None | Time: 200.01199984550476 | Stato soluzione: NO_SOLUTION_FOUND | Best lb: 2447.0 |
+| Nome Istanza: ForestFire_n250_1-500_q=5 | Fun. Obiettivo: None | Time: 200.52999997138977 | Stato soluzione: NO_SOLUTION_FOUND | Best lb: 12572.0 |
 | Nome Istanza: ForestFire_n250_1-100_q=6 | Fun. Obiettivo: None | Time: 200.0090000629425 | Stato soluzione: NO_SOLUTION_FOUND | Best lb: 2152.0 |
 | Nome Istanza: ForestFire_n250_1-500_q=6 | Fun. Obiettivo: None | Time: 200.00099992752075 | Stato soluzione: NO_SOLUTION_FOUND | Best lb: 11258.0 |
 | Nome Istanza: WattsStrogatz_n250_1-100_q=2 | Fun. Obiettivo: 6463.0 | Time: 10.579999923706055 | Stato soluzione: OPTIMAL | Best lb: 6463.000000000001 |
@@ -91,7 +91,7 @@
 | Nome Istanza: WattsStrogatz_n250_1-100_q=6 | Fun. Obiettivo: None | Time: 200.06100010871887 | Stato soluzione: NO_SOLUTION_FOUND | Best lb: 2167.0 |
 | Nome Istanza: WattsStrogatz_n250_1-500_q=6 | Fun. Obiettivo: None | Time: 200.01900005340576 | Stato soluzione: NO_SOLUTION_FOUND | Best lb: 10285.0 |
 | Nome Istanza: BarabasiAlbert_n500_1-100_q=2 | Fun. Obiettivo: 19171.0 | Time: 150.52600002288818 | Stato soluzione: OPTIMAL | Best lb: 12317.000000000007 |
-| Nome Istanza: BarabasiAlbert_n500_1-100_q=3 | Fun. Obiettivo: 23734.0 | Time: 197.3030002117157 | Stato soluzione: FEASIBLE | Best lb: 8362.000000000007 | ** dopo 140 secondi la prima soluzione ammissibile **
+| Nome Istanza: BarabasiAlbert_n500_1-100_q=3 | Fun. Obiettivo: 18946.0 | Time: 200.02600002288818 | Stato soluzione: FEASIBLE | Best lb: 8362.000000000007 |
 | Nome Istanza: BarabasiAlbert_n1000_1-100_q=2 | Fun. Obiettivo: 51106.0 | Time: 200.07200002670288 | Stato soluzione: FEASIBLE | Best lb: 25789.000000000033 |
 | Nome Istanza: BarabasiAlbert_n1000_1-100_q=3 | Fun. Obiettivo: 49626.0 | Time: 197.69500017166138 | Stato soluzione: FEASIBLE | Best lb: 16578.0 | ** dopo 185 secondi la prima soluzione ammissibile **
 | Nome Istanza: BarabasiAlbert_n2500_1-100_q=2 | Fun. Obiettivo: 124638.0 | Time: 200.08399987220764 | Stato soluzione: FEASIBLE | Best lb: 62369.00000000002 |

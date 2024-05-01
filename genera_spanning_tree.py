@@ -5,6 +5,9 @@ import matplotlib.pyplot as plt
 import scipy as sp
 import random
 
+import disegna_grafi
+from test import multi_robot_model
+
 
 def replace_chars(stringa: str):
     out_str = ''
@@ -20,6 +23,7 @@ class Istanza:
     def __init__(self, path_grafo, grid_graph: bool = False):
         self.__path_grafo = path_grafo
         self.__grid_graph = grid_graph
+        self.__nome_istanza = self.__path_grafo.split("/")[-1][:-4]
         self.__n = self.leggiIstanza(path_grafo)[0]
         self.__q = self.leggiIstanza(path_grafo)[1]
         self.listaPesi = self.leggiIstanza(path_grafo)[2]
@@ -50,8 +54,10 @@ class Istanza:
         for peso in self.listaPesi:
             if peso > 100:
                 max_peso = 500
+                break
             else:
                 max_peso = 100
+
         node_id = {}
 
         for i, node in enumerate(sorted(grafo.nodes())):
@@ -75,7 +81,7 @@ class Istanza:
             n = int(sqrt(self.__n))
             path = f'istanze_algoritmi/{tipo_algoritmo}/{n}x{n}/{n}x{n}_1-{max_peso}_q={self.__q} ({numFile}).txt'
         else:
-            path = f'istanze_algoritmi/{tipo_algoritmo}/Ventresca/n{self.__n}_1-{max_peso}_q={self.__q} ({numFile}).txt'
+            path = f'istanze_algoritmi/{tipo_algoritmo}/Ventresca/{self.__nome_istanza}.txt'
 
         with open(path, 'w', encoding='utf-8') as file:
             file.write(risultato)
@@ -131,10 +137,18 @@ class Istanza:
 
 
 if __name__ == '__main__':
-    g = Istanza('istanze/9x9/9x9_1-100_q=2 (1).txt', grid_graph=True)
+    path = 'istanze/Ventresca/ForestFire_n250_1-100_q=2.txt'
+    g = Istanza(path, grid_graph=False)
     rST, pathR = g.genera_RandomST()
-    aST = g.genera_AdditiveST()[0]
-    mST = g.genera_MinimumST()[0]
+    aST, pathA = g.genera_AdditiveST()
+    mST, pathM = g.genera_MinimumST()
+
+    if nx.is_connected(g.grafo):
+        print('CONNESSO')
+    else:
+        print('NON CONNESSO')
+
+    #risultato = multi_robot_model(pathM, 1)
 
     num_nodes = len(g.grafo.nodes)
     num_cols = int(num_nodes ** 0.5)
@@ -147,25 +161,30 @@ if __name__ == '__main__':
     pos2 = {}
     for i, node in enumerate(g.grafo.nodes):
         row = i // num_cols
-        col = i % num_cols + 10
+        col = i % num_cols + 15
         pos2[node] = (col, -row)
     pos3 = {}
     for i, node in enumerate(g.grafo.nodes):
-        row = i // num_cols + 10
+        row = i // num_cols + 15
         col = i % num_cols
         pos3[node] = (col, -row)
     pos4 = {}
     for i, node in enumerate(g.grafo.nodes):
-        row = i // num_cols + 10
-        col = i % num_cols + 10
+        row = i // num_cols + 15
+        col = i % num_cols + 15
         pos4[node] = (col, -row)
 
-    nx.draw(g.grafo, with_labels=True, pos=pos)
-    nx.draw(rST, with_labels=True, pos=pos2, edge_color='red')
-    nx.draw(aST, with_labels=True, pos=pos3, edge_color='green')
-    nx.draw(mST, with_labels=True, pos=pos4, edge_color='blue')
-
+    '''nx.draw(g.grafo, with_labels=True, node_size=100)
     plt.show()
+    nx.draw(g.grafo, with_labels=True, edge_color='red', node_size=100)
+    plt.show()
+    nx.draw(aST, with_labels=True, edge_color='green', node_size=100)
+    plt.show()
+    nx.draw(mST, with_labels=True, edge_color='blue', node_size=100)
+    plt.show()'''
     print()
-    print(g)
+    '''print(g)
     print(pathR)
+    print(rST.edges.data())
+    print(aST.edges.data())
+    print(mST.edges.data())'''

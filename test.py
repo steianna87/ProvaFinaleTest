@@ -6,8 +6,6 @@ import networkx as nx
 from mip import *
 from networkx import Graph
 
-from genera_spanning_tree import Istanza
-
 
 @dataclass
 class Risultato:
@@ -150,16 +148,17 @@ def multi_robot_model(path: str, verbose: int):
 
     colore_set = {0: 'red', 1: 'blue', 2: 'black', 3: 'green', 4: 'purple', 5: 'pink', 6: 'yellow'}
 
-    for i in range(n):
-        for s in range(q):
-            if float(x[i][s].x) > 0.99:
-                soluzione.add_node(i, set=s, color=colore_set[s])
-
-    for s in range(q):
+    if m.num_solutions:
         for i in range(n):
-            for j in range(n):
-                if F[i][j] is not None and int(F[i][j].x) > 0 and y[i][j][s] is not None and float(y[i][j][s].x) > 0.99:
-                    soluzione.add_edge(i, j, color=colore_set[s])
+            for s in range(q):
+                if float(x[i][s].x) > 0.99:
+                    soluzione.add_node(i, set=s, color=colore_set[s])
+
+        for s in range(q):
+            for i in range(n):
+                for j in range(n):
+                    if F[i][j] is not None and int(F[i][j].x) > 0 and y[i][j][s] is not None and float(y[i][j][s].x) > 0.99:
+                        soluzione.add_edge(i, j, color=colore_set[s])
 
     print()
     #risultato = (f'| Nome Istanza: {nomeIstanza} | Fun. Obiettivo: {m.objective_value} | Time: {dati[-1][0]} | Stato '
@@ -169,7 +168,7 @@ def multi_robot_model(path: str, verbose: int):
     return risultato
 
 if __name__ == '__main__':
-    risultato = multi_robot_model(path="istanze/Ventresca/ForestFire_n250_1-100_q=3.txt", verbose=1)
+    risultato = multi_robot_model(path="istanze/Ventresca/ForestFire_n250_1-500_q=5.txt", verbose=1)
     print(risultato)
 
     num_nodes = len(risultato.grafo.nodes)
