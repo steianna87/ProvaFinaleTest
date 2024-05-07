@@ -7,7 +7,7 @@ from genera_spanning_tree import Istanza
 from disegna_grafi import disegna_risultati
 
 # Approccio con formazione di spanning tree grazie all'algoritmo di Kruskal e Random
-path = "istanze/Ventresca/WattsStrogatz_n1000_1-100_q=2.txt"
+path = "istanze/Ventresca/WattsStrogatz_n1500_1-100_q=4.txt"
 grid_graph = False
 istanza = Istanza(path, grid_graph=grid_graph)
 
@@ -46,9 +46,9 @@ risultato_mST = multi_robot_model(path_minimum, 1)
 if grid_graph:
     disegna_risultati([best_risultato, risultato_aST, risultato_mST], grid_graph=grid_graph)
 else:
-    disegna_risultati([best_risultato])
+    '''disegna_risultati([best_risultato])
     disegna_risultati([risultato_aST])
-    disegna_risultati([risultato_mST])
+    disegna_risultati([risultato_mST])'''
     pass
 
 print()

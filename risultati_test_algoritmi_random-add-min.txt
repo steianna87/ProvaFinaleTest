@@ -390,3 +390,23 @@ Minimum: | Nome Istanza: n500_1-100_q=2 | Fun. Obiettivo: 16476.0 | Time: 200.00
 Random (tentativi: 1 migliore: 0): | Nome Istanza: Nessun risultato | Fun. Obiettivo: 1e+16 | Time: 0 | Stato soluzione: NO_SOLUTION_FOUND | Best lb: 0 |
 Additive: | Nome Istanza: n500_1-100_q=3 | Fun. Obiettivo: nan | Time: 200.00099992752075 | Stato soluzione: NO_SOLUTION_FOUND | Best lb: 8596.0 |
 Minimum: | Nome Istanza: n500_1-100_q=3 | Fun. Obiettivo: nan | Time: 200.00099992752075 | Stato soluzione: NO_SOLUTION_FOUND | Best lb: 8596.0 |
+************* RISULTATI: istanze/Ventresca/WattsStrogatz_n1000_1-100_q=2.txt *************
+Random (tentativi: 1 migliore: 1): | Nome Istanza: WattsStrogatz_n1000_1-100_q=2 | Fun. Obiettivo: 49246.0 | Time: 710.9443652629852 | Stato soluzione: FEASIBLE | Best lb: 24916.000000000015 |
+Additive: | Nome Istanza: WattsStrogatz_n1000_1-100_q=2 | Fun. Obiettivo: nan | Time: 200.1579999923706 | Stato soluzione: NO_SOLUTION_FOUND | Best lb: 24916.00000000001 |
+Minimum: | Nome Istanza: WattsStrogatz_n1000_1-100_q=2 | Fun. Obiettivo: 49011.0 | Time: 136.4649999141693 | Stato soluzione: FEASIBLE | Best lb: 24916.000000000015 |
+************* RISULTATI: istanze/Ventresca/WattsStrogatz_n1000_1-100_q=3.txt *************
+Random (tentativi: 1 migliore: 0): | Nome Istanza: Nessun risultato | Fun. Obiettivo: 1e+16 | Time: 0 | Stato soluzione: NO_SOLUTION_FOUND | Best lb: 0 |
+Additive: | Nome Istanza: WattsStrogatz_n1000_1-100_q=3 | Fun. Obiettivo: nan | Time: 191.6980001926422 | Stato soluzione: NO_SOLUTION_FOUND | Best lb: 17213.0 |
+Minimum: | Nome Istanza: WattsStrogatz_n1000_1-100_q=3 | Fun. Obiettivo: nan | Time: 200.01500010490417 | Stato soluzione: NO_SOLUTION_FOUND | Best lb: 17213.0 |
+************* RISULTATI: istanze/Ventresca/WattsStrogatz_n1500_1-100_q=2.txt *************
+Random (tentativi: 1 migliore: 0): | Nome Istanza: Nessun risultato | Fun. Obiettivo: 1e+16 | Time: 0 | Stato soluzione: NO_SOLUTION_FOUND | Best lb: 0 |
+Additive: | Nome Istanza: WattsStrogatz_n1500_1-100_q=2 | Fun. Obiettivo: 74520.0 | Time: 200.3069999217987 | Stato soluzione: FEASIBLE | Best lb: 37443.000000000015 |
+Minimum: | Nome Istanza: WattsStrogatz_n1500_1-100_q=2 | Fun. Obiettivo: 74792.0 | Time: 197.99499988555908 | Stato soluzione: FEASIBLE | Best lb: 37443.00000000003 |
+************* RISULTATI: istanze/Ventresca/WattsStrogatz_n1500_1-100_q=3.txt *************
+Random (tentativi: 1 migliore: 0): | Nome Istanza: Nessun risultato | Fun. Obiettivo: 1e+16 | Time: 0 | Stato soluzione: NO_SOLUTION_FOUND | Best lb: 0 |
+Additive: | Nome Istanza: WattsStrogatz_n1500_1-100_q=3 | Fun. Obiettivo: nan | Time: 200.00099992752075 | Stato soluzione: NO_SOLUTION_FOUND | Best lb: 25200.000000000033 |
+Minimum: | Nome Istanza: WattsStrogatz_n1500_1-100_q=3 | Fun. Obiettivo: 75517.0 | Time: 200.1289999485016 | Stato soluzione: FEASIBLE | Best lb: 25200.000000000015 |
+************* RISULTATI: istanze/Ventresca/WattsStrogatz_n1500_1-100_q=4.txt *************
+Random (tentativi: 1 migliore: 0): | Nome Istanza: Nessun risultato | Fun. Obiettivo: 1e+16 | Time: 0 | Stato soluzione: NO_SOLUTION_FOUND | Best lb: 0 |
+Additive: | Nome Istanza: WattsStrogatz_n1500_1-100_q=4 | Fun. Obiettivo: nan | Time: 200.07500004768372 | Stato soluzione: NO_SOLUTION_FOUND | Best lb: 18607.0 |
+Minimum: | Nome Istanza: WattsStrogatz_n1500_1-100_q=4 | Fun. Obiettivo: nan | Time: 197.92700004577637 | Stato soluzione: NO_SOLUTION_FOUND | Best lb: 18607.0 |
