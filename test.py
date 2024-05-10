@@ -168,7 +168,7 @@ def multi_robot_model(path: str, verbose: int):
     return risultato
 
 if __name__ == '__main__':
-    risultato = multi_robot_model(path="istanze/Ventresca/ForestFire_n250_1-500_q=5.txt", verbose=1)
+    risultato = multi_robot_model(path="istanze/9x9/9x9_1-100_q=2 (1).txt", verbose=1)
     print(risultato)
 
     num_nodes = len(risultato.grafo.nodes)

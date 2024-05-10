@@ -1,8 +1,8 @@
 import networkx as nx
 import random
 
-n = 13               # RICORDA DI CAMBIARAE IL NUMERO DEL FILE NELLE () DEL PATH
-q = 5
+n = 3              # RICORDA DI CAMBIARAE IL NUMERO DEL FILE NELLE () DEL PATH
+q = 2
 max_peso = 100
 numFile = 1
 
