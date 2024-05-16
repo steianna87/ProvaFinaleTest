@@ -61,3 +61,8 @@ if __name__ == '__main__':
 
     '''risultatE = multi_robot_model(path='istanze/Ventresca/ErdosRenyi_n235_1-100_q=2.txt', verbose=1)
     disegna_risultati([risultatE])'''
+
+    ''' Gurobi Optimizer version 11.0.1 build v11.0.1rc0 (win64 - Windows 11.0 (22631.2))
+
+        CPU model: Intel(R) Core(TM) i7-8565U CPU @ 1.80GHz, instruction set [SSE2|AVX|AVX2]
+        Thread count: 4 physical cores, 8 logical processors, using up to 8 threads '''
