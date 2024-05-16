@@ -9,7 +9,7 @@ import scipy as sp
 "istanze/9x9/9x9_1-100_q=2 (1).txt"
 
 risultato = test.multi_robot_model("istanza_3x3_1-100_q=2.txt", 0)
-ist = Istanza(path_grafo="istanza_3x3_1-100_q=2.txt", grid_graph=True)
+ist = Istanza(path_grafo="istanze/9x9/9x9_1-100_q=2 (1).txt", grid_graph=True)
 ist.risolvi()
 print()
 print(risultato)
