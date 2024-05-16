@@ -1,4 +1,6 @@
+import copy
 from math import sqrt
+from time import time
 
 import networkx as nx
 import matplotlib.pyplot as plt
@@ -29,6 +31,85 @@ class Istanza:
         self.listaPesi = self.leggiIstanza(path_grafo)[2]
         self.N = self.leggiIstanza(path_grafo)[3]
         self.grafo = self.inizializza_Grafo()
+
+        self.soluzione = nx.Graph()
+        self._subset = {}
+        self._fOb = 1e16
+        self._best_lb = 0
+        self._elapsed_time = 0
+
+    def risolvi(self):
+        self.soluzione = self.inizializza_Grafo()
+        self.soluzione.clear_edges()
+        parziale = {}
+        for s in range(2 * self.__q):
+            if s < self.__q:
+                parziale[s] = {'lista': [], 'Tot set': 0}
+        self._best_lb = self.calcola_best_lb()
+
+        t1 = time()
+        self.ricorsione(parziale, 0)
+        t2 = time()
+        self._elapsed_time = t2 - t1
+
+        colore_set = {0: 'red', 1: 'blue', 2: 'black', 3: 'green', 4: 'purple', 5: 'pink', 6: 'yellow'}
+        for s in range(self.__q):
+            for i in self._subset[s]['lista']:
+                self.soluzione.nodes.data()[i]['color'] = colore_set[s]
+            for nodo in self._subset[s]['lista']:
+                for vicino in self.N[nodo]:
+                    if vicino in self._subset[s]['lista']:
+                        self.soluzione.add_edge(nodo, vicino, color=colore_set[s])
+
+    def filtro(self, nodo, parziale_s_lista):
+        if len(parziale_s_lista) == 0:
+            return True
+        vicini = self.N[nodo]
+        for vicino in vicini:
+            if vicino in parziale_s_lista:
+                return True
+        return False
+
+    def get_max(self, parziale):
+        return max(parziale[s]['Tot set'] for s in range(self.__q))
+
+    def calcola_len(self, parziale):
+        lunghezza = 0
+        for s in range(self.__q):
+            lunghezza += len(parziale[s]['lista'])
+        return lunghezza
+
+    def calcola_best_lb(self):
+        return 1940             # per calcolare il best lb si potrebbe sfruttare il calcolo
+                                # con il problema rilassato che utilizza già gurobi
+
+    def ricorsione(self, parziale, pos):
+        if self.calcola_len(parziale) != pos:
+            return
+        if self.get_max(parziale) > self._fOb:
+            return
+        if self.get_max(parziale) > self._best_lb:
+            return
+
+        if self._fOb == self._best_lb:
+            return
+
+        if pos == self.__n:
+            print(parziale)
+            if self.get_max(parziale) < self._fOb:
+                self._fOb = self.get_max(parziale)
+                self._subset = copy.deepcopy(parziale)
+                # print(parziale)
+        else:
+            for nodo in range(pos, self.__n):
+                pos += 1
+                for s in range(self.__q):
+                    if self.filtro(nodo, parziale[s]['lista']):
+                        parziale[s]['lista'].append(nodo)
+                        parziale[s]['Tot set'] += self.listaPesi[nodo]
+                        self.ricorsione(parziale, pos)
+                        parziale[s]['lista'].pop()
+                        parziale[s]['Tot set'] -= self.listaPesi[nodo]
 
     def leggiIstanza(self, file):
         with open(file, 'r', encoding='utf-8') as istanza:
@@ -109,7 +190,7 @@ class Istanza:
             peso_nodo = self.listaPesi[nodo]
             for vicino in self.N[nodo]:
                 peso_vicino = self.listaPesi[vicino]
-                self.grafo.add_weighted_edges_from([(nodo, vicino, peso_nodo+peso_vicino)], weight='weight')
+                self.grafo.add_weighted_edges_from([(nodo, vicino, peso_nodo + peso_vicino)], weight='weight')
 
         ST = nx.minimum_spanning_tree(self.grafo, algorithm='kruskal', weight='weight')
         path = self.scriviIstanza(ST, 'additive', grid_graph=self.__grid_graph)
@@ -148,7 +229,7 @@ if __name__ == '__main__':
     else:
         print('NON CONNESSO')
 
-    #risultato = multi_robot_model(pathM, 1)
+    # risultato = multi_robot_model(pathM, 1)
 
     num_nodes = len(g.grafo.nodes)
     num_cols = int(num_nodes ** 0.5)

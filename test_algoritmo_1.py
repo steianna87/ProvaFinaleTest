@@ -32,7 +32,7 @@ def leggiIstanza(file):
     return n, q, listaStanze, N
 
 
-path = "istanze/9x9/9x9_1-500_q=2 (3).txt"
+path = "istanze/9x9/9x9_1-100_q=2 (1).txt"
 n, q, listaStanze, N = leggiIstanza(path)
 
 m = Model('multiRobot')
