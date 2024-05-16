@@ -1,4 +1,5 @@
 import copy
+import math
 from math import sqrt
 from time import time
 
@@ -20,6 +21,11 @@ def replace_chars(stringa: str):
             out_str += char
     return out_str
 
+def col_round(x):
+  frac = x - math.floor(x)
+  if frac < 0.5: return math.floor(x)
+  return math.ceil(x)
+
 
 class Istanza:
     def __init__(self, path_grafo, grid_graph: bool = False):
@@ -37,29 +43,39 @@ class Istanza:
         self._fOb = 1e16
         self._best_lb = 0
         self._elapsed_time = 0
+        self._pit_stop = 0
 
     def risolvi(self):
         self.soluzione = self.inizializza_Grafo()
         self.soluzione.clear_edges()
         parziale = {}
-        for s in range(2 * self.__q):
-            if s < self.__q:
-                parziale[s] = {'lista': [], 'Tot set': 0}
-        self._best_lb = self.calcola_best_lb()
+        for s in range(self.__q):
+            parziale[s] = {'lista': [], 'Tot set': 0}
 
-        t1 = time()
+        self._best_lb = self.calcola_best_lb()
+        print(sum(self.listaPesi))
+        print(self._best_lb)
+        print("Inizio ricerca:")
+
+        self.t1 = time()
+        self.t11 = time()
         self.ricorsione(parziale, 0)
-        t2 = time()
-        self._elapsed_time = t2 - t1
+        self.t2 = time()
+        self._elapsed_time = self.t2 - self.t1
 
         colore_set = {0: 'red', 1: 'blue', 2: 'black', 3: 'green', 4: 'purple', 5: 'pink', 6: 'yellow'}
-        for s in range(self.__q):
-            for i in self._subset[s]['lista']:
-                self.soluzione.nodes.data()[i]['color'] = colore_set[s]
-            for nodo in self._subset[s]['lista']:
-                for vicino in self.N[nodo]:
-                    if vicino in self._subset[s]['lista']:
-                        self.soluzione.add_edge(nodo, vicino, color=colore_set[s])
+        if self._subset != {}:
+            for s in range(self.__q):
+                for i in self._subset[s]['lista']:
+                    self.soluzione.nodes.data()[i]['color'] = colore_set[s]
+                for nodo in self._subset[s]['lista']:
+                    for vicino in self.N[nodo]:
+                        if vicino in self._subset[s]['lista']:
+                            self.soluzione.add_edge(nodo, vicino, color=colore_set[s])
+        else:
+            for s in range(self.__q):
+                self._subset[s] = {'lista': [], 'Tot set': 0}
+
 
     def filtro(self, nodo, parziale_s_lista):
         if len(parziale_s_lista) == 0:
@@ -80,10 +96,21 @@ class Istanza:
         return lunghezza
 
     def calcola_best_lb(self):
-        return 1940             # per calcolare il best lb si potrebbe sfruttare il calcolo
-                                # con il problema rilassato che utilizza già gurobi
+        if sum(self.listaPesi) % self.__q == 0:
+            return sum(self.listaPesi) / self.__q
+        return col_round(sum(self.listaPesi) / self.__q + 0.5) # arrotondamento per eccesso
+                                # per calcolare il best lb si potrebbe sfruttare il calcolo
+                                # con il problema rilassato che utilizza già Gurobi
 
     def ricorsione(self, parziale, pos):
+        self.t2 = time()
+        if col_round(self.t2 - self.t11) > 10:
+            self._pit_stop += 10
+            print(f"{self._pit_stop} sec")
+            self.t11 = time()
+        if (self.t2 - self.t1) > 200:
+            return
+
         if self.calcola_len(parziale) != pos:
             return
         if self.get_max(parziale) > self._fOb:
