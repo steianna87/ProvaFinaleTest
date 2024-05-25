@@ -9,7 +9,7 @@ import scipy as sp
 "istanze/9x9/9x9_1-100_q=2 (1).txt"
 
 risultato = test.multi_robot_model("istanza_3x3_1-100_q=2.txt", 0)
-ist = Istanza(path_grafo="istanze/Ventresca/WattsStrogatz_n250_1-500_q=4.txt", grid_graph=True)
+ist = Istanza(path_grafo="istanze/9x9/9x9_1-100_q=2 (1).txt", grid_graph=True)
 ist.risolvi()
 print()
 print(risultato)
@@ -31,7 +31,7 @@ plt.show()
 try:
     colori_edge = [edge[2]['color'] for edge in ist.soluzione.edges.data()]
     colori_node = [node[1]['color'] for node in ist.soluzione.nodes.data()]
-    nx.draw(ist.soluzione, node_color=colori_node, edge_color=colori_edge, with_labels=True)
+    nx.draw(ist.soluzione,pos=pos, node_color=colori_node, edge_color=colori_edge, with_labels=True)
 except KeyError:
     print('NESSUNA SOLUZIONE TROVATA TRAMITE RICORSIONE')
 plt.show()

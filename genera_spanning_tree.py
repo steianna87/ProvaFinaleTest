@@ -4,12 +4,7 @@ from math import sqrt
 from time import time
 
 import networkx as nx
-import matplotlib.pyplot as plt
-import scipy as sp
-import random
 
-import disegna_grafi
-from test import multi_robot_model
 
 
 def replace_chars(stringa: str):

@@ -1,6 +1,7 @@
 import networkx as nx
 from matplotlib import pyplot as plt
 
+from genera_spanning_tree import Istanza
 from test import Risultato, multi_robot_model
 
 
@@ -51,13 +52,16 @@ def disegna_risultati(risultati: list[Risultato], grid_graph: bool = False):
 
 
 if __name__ == '__main__':
-    risultato1 = multi_robot_model(path='istanze_algoritmi/minimum/9x9/9x9_1-100_q=2 (3).txt', verbose=1)
+    '''risultato1 = multi_robot_model(path='istanze_algoritmi/minimum/9x9/9x9_1-100_q=2 (3).txt', verbose=1)
     risultato2 = multi_robot_model(path='istanze/9x9/9x9_1-100_q=2 (3).txt', verbose=1)
     risultato3 = multi_robot_model(path='istanze/9x9/9x9_1-100_q=2 (3).txt', verbose=1)
-    risultato4 = multi_robot_model(path='istanze/9x9/9x9_1-100_q=2 (3).txt', verbose=1)
+    risultato4 = multi_robot_model(path='istanze/9x9/9x9_1-100_q=2 (3).txt', verbose=1)'''
     risultato_fake = Risultato(nx.Graph(), '', 0, 0, '', 0)
+    ist = Istanza(path_grafo='istanze/9x9/9x9_1-100_q=2 (1).txt', grid_graph=True)
+    risultato1 = Risultato(ist.grafo, '', 0, 0, '', 0)
+    risultato2 = Risultato(ist.genera_AdditiveST()[0], '', 0, 0, '', 0)
 
-    disegna_risultati([risultato_fake, risultato2, risultato3, risultato4])
+    disegna_risultati([risultato1, risultato2], grid_graph=True)
 
     '''risultatE = multi_robot_model(path='istanze/Ventresca/ErdosRenyi_n235_1-100_q=2.txt', verbose=1)
     disegna_risultati([risultatE])'''
