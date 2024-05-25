@@ -15,6 +15,7 @@ print()
 print(risultato)
 print()
 print(ist._subset)
+print(ist._fOb)
 print(ist._elapsed_time)
 
 num_nodes = len(ist.soluzione.nodes)
@@ -27,7 +28,10 @@ for i, node in enumerate(ist.soluzione.nodes):
 
 disegna_grafi.disegna_risultati([risultato], grid_graph=True)
 plt.show()
-colori_edge = [edge[2]['color'] for edge in ist.soluzione.edges.data()]
-colori_node = [node[1]['color'] for node in ist.soluzione.nodes.data()]
-nx.draw(ist.soluzione, pos=pos, node_color=colori_node, edge_color=colori_edge, with_labels=True)
+try:
+    colori_edge = [edge[2]['color'] for edge in ist.soluzione.edges.data()]
+    colori_node = [node[1]['color'] for node in ist.soluzione.nodes.data()]
+    nx.draw(ist.soluzione,pos=pos, node_color=colori_node, edge_color=colori_edge, with_labels=True)
+except KeyError:
+    print('NESSUNA SOLUZIONE TROVATA TRAMITE RICORSIONE')
 plt.show()

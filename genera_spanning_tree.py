@@ -80,7 +80,7 @@ class Istanza:
         return lunghezza
 
     def calcola_best_lb(self):
-        return 10923             # per calcolare il best lb si potrebbe sfruttare il calcolo
+        return 1940             # per calcolare il best lb si potrebbe sfruttare il calcolo
                                 # con il problema rilassato che utilizza già gurobi
 
     def ricorsione(self, parziale, pos):
@@ -99,7 +99,7 @@ class Istanza:
             if self.get_max(parziale) < self._fOb:
                 self._fOb = self.get_max(parziale)
                 self._subset = copy.deepcopy(parziale)
-                print(parziale)
+                # print(parziale)
         else:
             for nodo in range(pos, self.__n):
                 pos += 1
@@ -218,8 +218,8 @@ class Istanza:
 
 
 if __name__ == '__main__':
-    path = 'istanze/9x9/9x9_1-100_q=2 (1).txt'
-    g = Istanza(path, grid_graph=True)
+    path = 'istanze/Ventresca/ForestFire_n250_1-100_q=2.txt'
+    g = Istanza(path, grid_graph=False)
     rST, pathR = g.genera_RandomST()
     aST, pathA = g.genera_AdditiveST()
     mST, pathM = g.genera_MinimumST()
@@ -242,24 +242,27 @@ if __name__ == '__main__':
     pos2 = {}
     for i, node in enumerate(g.grafo.nodes):
         row = i // num_cols
-        col = i % num_cols + 10
+        col = i % num_cols + 15
         pos2[node] = (col, -row)
     pos3 = {}
     for i, node in enumerate(g.grafo.nodes):
-        row = i // num_cols + 10
+        row = i // num_cols + 15
         col = i % num_cols
         pos3[node] = (col, -row)
     pos4 = {}
     for i, node in enumerate(g.grafo.nodes):
-        row = i // num_cols + 10
-        col = i % num_cols + 10
+        row = i // num_cols + 15
+        col = i % num_cols + 15
         pos4[node] = (col, -row)
 
-    nx.draw(g.grafo, with_labels=True, node_size=100, pos=pos)
-    nx.draw(rST, with_labels=True, edge_color='red', node_size=100, pos=pos2)
-    nx.draw(aST, with_labels=True, edge_color='green', node_size=100, pos=pos3)
-    nx.draw(mST, with_labels=True, edge_color='blue', node_size=100, pos=pos4)
+    '''nx.draw(g.grafo, with_labels=True, node_size=100)
     plt.show()
+    nx.draw(g.grafo, with_labels=True, edge_color='red', node_size=100)
+    plt.show()
+    nx.draw(aST, with_labels=True, edge_color='green', node_size=100)
+    plt.show()
+    nx.draw(mST, with_labels=True, edge_color='blue', node_size=100)
+    plt.show()'''
     print()
     '''print(g)
     print(pathR)
